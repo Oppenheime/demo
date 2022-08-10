@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.book.mapper.BookMapper">
+  <resultMap id="bookResultMap" type="com.example.book.domain.Book">
+    <id property="id" column="id" jdbcType="INTEGER"/>
+    <result property="name" column="name" jdbcType="VARCHAR"/>
+    <result property="author" column="author" jdbcType="VARCHAR"/>
+    <result property="intro" column="intro" jdbcType="VARCHAR"/>
+    <result property="price" column="price" jdbcType="DOUBLE"/>
+    <result property="bookimg" column="bookimg" jdbcType="VARCHAR"/>
+  </resultMap>
+
+  <select id="findAll" resultMap="bookResultMap">
+    SELECT * FROM book
+  </select>
+
+  <select id="findById" resultType="com.example.book.domain.Book">
+    SELECT * FROM book WHERE id = #{id}
+  </select>
+
+  <insert id="saveBook" parameterType="com.example.book.domain.Book">
+    INSERT INTO book VALUES (#{id},#{name},#{author},#{intro},#{price},#{bookimg})
+  </insert>
+
+
+  <update id="updateBook" parameterType="com.example.book.domain.Book">
+    <!--prefix:在trim标签内sql语句加上前缀 -->
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="id != null">id = #{id},</if>
+      <if test="name != null">`name` = #{name},</if>
+      <if test="author != null">author = #{author},</if>
+      <if test="intro != null">intro = #{intro},</if>
+      <if test="price != null">price = #{price},</if>
+      <if test="bookimg != null">bookimg = #{bookimg},</if>
+    </trim>
+  </update>
+
+  <delete id="deleteBook">
+    DELETE FROM book WHERE id = #{id}
+  </delete>
+
+</mapper>
